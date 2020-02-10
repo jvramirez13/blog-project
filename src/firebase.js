@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 //This is the configuration of our firebase
 //which allows us to connect our app to 
