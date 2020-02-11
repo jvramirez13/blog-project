@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
@@ -14,6 +14,12 @@ import fire from "./firebase.js";
 const useStyles = makeStyles(theme => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`
+  },
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: 700
+    }
   },
   toolbarTitle: {
     flex: 1
@@ -85,6 +91,29 @@ const useStyles = makeStyles(theme => ({
 export default function HomeNoLog() {
   const classes = useStyles();
 
+  const [currentSubmission, setSubmission] = useState("");
+  const [articleTitle, setArticleTitle] = useState("");
+
+  function onSubmit(e) {
+    e.preventDefault();
+
+    fire
+      .firestore()
+      .collection("blogs")
+      .doc(articleTitle)
+      .set({
+        title: articleTitle,
+        post: currentSubmission,
+        comments: {}
+      })
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -124,6 +153,40 @@ export default function HomeNoLog() {
                 Blog Articles
               </Typography>
               <Posts />
+              <Typography
+                variant="h6"
+                gutterBottom
+                className={classes.mainGrid}
+              >
+                Write your own Article!
+                <form
+                  className={classes.mainGrid}
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={onSubmit}
+                >
+                  <div>
+                    <label>Title: </label>
+                    <input
+                      type="text"
+                      value={articleTitle}
+                      onChange={e => setArticleTitle(e.currentTarget.value)}
+                      size="42"
+                    />
+                  </div>
+                  <textarea
+                    id="w3mission"
+                    rows="4"
+                    cols="50"
+                    value={currentSubmission}
+                    onChange={e => setSubmission(e.currentTarget.value)}
+                  >
+                    At w3schools.com you will learn how to make a website. We
+                    offer free tutorials in all web development technologies.
+                  </textarea>
+                  <button>Submit Article</button>
+                </form>
+              </Typography>
             </Grid>
             {/* End main content */}
             {/* Sidebar */}

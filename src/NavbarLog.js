@@ -12,7 +12,7 @@ const AdapterLink = React.forwardRef((props, ref) => (
   <RouterLink innerRef={ref} {...props} />
 ));
 
-const routes = ["/", "/About", "/Projects", "/Resume", "/Contact"];
+const routes = ["/HomeLog", "/About", "/Projects", "/Resume", "/Contact"];
 
 const useStyles = makeStyles(theme => ({
   toolbar: {

@@ -94,7 +94,7 @@ const LoginEx = ({ history }) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign in to Perfect Sense Blog
           </Typography>
           <form className={classes.form} onSubmit={handleLogin}>
             <TextField

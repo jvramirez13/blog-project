@@ -201,8 +201,13 @@ const HomeNoLog = () => {
           </Typography>
           {Object.values(article.comments).map((comment, index) => (
             <div>
-              <Markdown>{comment}</Markdown>
-              <span>- written by {Object.keys(article.comments)[index]}</span>
+              <h4>
+                {comment}
+                <span style={{ fontSize: "11px", fontWeight: "1px" }}>
+                  {" "}
+                  - written by {Object.keys(article.comments)[index]}
+                </span>
+              </h4>
             </div>
           ))}
           <form
@@ -218,8 +223,7 @@ const HomeNoLog = () => {
               label="Leave a comment"
               onChange={e => twoCalls(e)}
             />
-            {console.log(currentComment)}
-            {console.log(currentArticle)}
+            <Divider style={{ marginTop: "50px", marginBottom: "50px" }} />
           </form>
         </div>
       ))}
