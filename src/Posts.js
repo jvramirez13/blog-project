@@ -115,6 +115,12 @@ const HomeNoLog = () => {
   const [currentArticle, setCurrentArticle] = useState("");
   const [currentComment, setCurrentComment] = useState("");
 
+  try {
+    setCurrentUser(fire.auth().currentUser.uid.toString());
+  } catch (e) {
+    console.log("Not Logged In!");
+  }
+
   //prevents refresh of browser everytime button is submitted
   function onSubmit(e) {
     e.preventDefault();
@@ -126,7 +132,6 @@ const HomeNoLog = () => {
       .get()
       .then(function(doc) {
         if (doc.exists) {
-          console.log("Document data:", doc.data().comments);
           let additionArray = doc.data().comments;
           if (currentUser === "Guest") {
             let randomNum = Math.floor(Math.random() * Math.floor(10000));
@@ -182,6 +187,7 @@ const HomeNoLog = () => {
       */
   }
 
+  //Updates both the currentArticle your trying to comment on and the Comment data you're trying to submit
   function twoCalls(e) {
     setCurrentArticle(e.currentTarget.id);
     setCurrentComment(e.currentTarget.value);
