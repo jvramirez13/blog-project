@@ -129,8 +129,7 @@ const SignUp = ({ history }) => {
             >
               Sign Up
             </Button>
-            <Grid container>
-            </Grid>
+            <Grid container></Grid>
             <Box mt={5}>
               <Copyright />
             </Box>
