@@ -1,11 +1,10 @@
 ### Intro
 
-I am a fourth-year student at the University of Virginia where I am studying computer science in the College of Arts and Sciences. My primary job function is as a software engineer.
-I am particularly interested in a full stack developer career. I enjoy working in both the front end and the back end.
+Founded in 2008, Perfect Sense is a full-service product company that capitalizes on its expanded product portfolio to drive innovations in web and mobile development for corporations worldwide.
 
-### Currently
+### Culture
 
-I currently intern at ENSCO, Inc. as a software engineer intern.
+From daily catered lunches and a full-time barista, to a game room with ping pong, shuffleboard, and foosball, we have built a company that puts its people first. Simply put, we like working with each other.
 
 ### Programming Languages
 
@@ -41,21 +40,9 @@ I currently intern at ENSCO, Inc. as a software engineer intern.
 - NPR podcasts
 - [Photography](https://instagram.com/jvramirez13)
 
-### Travel / Geography
-
-- I am from originally from Manila, Philippines. I have since lived in
-  Orange County, CA and Stafford, VA.
-- I am an Oregon Trail II enthusiast.
-
 ### Fun Facts
 
-- I have a list of thousands of ideas, like creating matching bow ties for cats and humans.
-- I almost always have a sketchbook with me.
-- I can't locate every country on a map.
+- The average tenure of active employees at the company is 3.9 years
+- In 2019, our mission project touched the lives of 2,412 individuals
+- 870 tickets to regular and post season games were provided to employees in 2019
 - I added this page because so many people complained that my site was just a resume.
-
-### I dream of
-
-- always finding inspiration.
-- enabling a brighter future.
-- doing better.

@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const sections = ["Home", "About"];
+const sections = ["Home"];
 
 export default function Navbar() {
   const classes = useStyles();

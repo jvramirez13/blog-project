@@ -125,6 +125,8 @@ const HomeNoLog = () => {
   function onSubmit(e) {
     e.preventDefault();
 
+    document.getElementById(currentArticle).value = "";
+
     fire
       .firestore()
       .collection("blogs")
@@ -171,20 +173,6 @@ const HomeNoLog = () => {
       .catch(function(error) {
         console.log("Error getting document:", error);
       });
-
-    /*
-    fire
-      .firestore()
-      .collection("blogs")
-      .doc(currentArticle)
-      .update({
-        comments: fire.firestore.FieldValue.arrayUnion({ newAddition })
-      })
-      .then(() => {
-        setCurrentArticle("");
-        setCurrentComment("");
-      });
-      */
   }
 
   //Updates both the currentArticle your trying to comment on and the Comment data you're trying to submit
@@ -223,7 +211,6 @@ const HomeNoLog = () => {
             onSubmit={onSubmit}
           >
             <TextField
-              value={currentComment}
               vid="standard-basic"
               id={article.id}
               label="Leave a comment"

@@ -14,6 +14,7 @@ import React, { useCallback, useContext } from "react";
 import { withRouter, Redirect } from "react-router";
 import fire from "./firebase.js";
 import { AuthContext } from "./Auth.js";
+import background from "./authentication_screen.png";
 
 function Copyright() {
   return (
@@ -33,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: `url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "dark"
