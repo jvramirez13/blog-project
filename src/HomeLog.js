@@ -146,10 +146,16 @@ const HomeNoLog = () => {
       .set({
         title: articleTitle,
         post: currentSubmission,
+        author: info.full_name,
         comments: {}
       })
       .then(function() {
         console.log("Document successfully written!");
+        setArticleTitle("");
+        setSubmission("");
+        document.getElementById(articleTitle).value = "";
+
+        document.getElementById(currentSubmission).value = "";
       })
       .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -197,41 +203,34 @@ const HomeNoLog = () => {
                 </Typography>
                 <PostsLog />
                 <Divider />
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  className={classes.mainGrid}
-                  marginBottom="2px"
-                >
-                  Write your own Article!
-                  <form
-                    className={classes.mainGrid}
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={onSubmit}
-                  >
-                    <div>
-                      <Typography>Title: </Typography>
-                      <input
-                        type="text"
-                        value={articleTitle}
-                        onChange={e => setArticleTitle(e.currentTarget.value)}
-                        size="42"
-                      />
-                    </div>
-                    <textarea
-                      id="w3mission"
-                      rows="20"
-                      cols="160"
-                      value={currentSubmission}
-                      onChange={e => setSubmission(e.currentTarget.value)}
-                    >
-                      At w3schools.com you will learn how to make a website. We
-                      offer free tutorials in all web development technologies.
-                    </textarea>
-                    <button>Submit Article</button>
-                  </form>
-                </Typography>
+                <Paper elevation={0} className={classes.sidebarAboutBox}>
+                  <Typography variant="h6" gutterBottom marginBottom="2px">
+                    Write your own Article!
+                    <form noValidate autoComplete="off" onSubmit={onSubmit}>
+                      <div>
+                        <Typography>Title: </Typography>
+                        <input
+                          type="text"
+                          value={articleTitle}
+                          onChange={e => setArticleTitle(e.currentTarget.value)}
+                          size="42"
+                        />
+                      </div>
+                      <textarea
+                        id="w3mission"
+                        rows="20"
+                        cols="140"
+                        value={currentSubmission}
+                        onChange={e => setSubmission(e.currentTarget.value)}
+                      >
+                        At w3schools.com you will learn how to make a website.
+                        We offer free tutorials in all web development
+                        technologies.
+                      </textarea>
+                      <button>Submit Article</button>
+                    </form>
+                  </Typography>
+                </Paper>
               </Grid>
               {/* End main content */}
               {/* Sidebar */}

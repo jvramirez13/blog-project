@@ -79,7 +79,8 @@ const useStyles = makeStyles(theme => ({
     width: 160
   },
   markdown: {
-    ...theme.typography.body2
+    ...theme.typography.body2,
+    marginBottom: "40px"
   },
   sidebarAboutBox: {
     padding: theme.spacing(2),
@@ -116,6 +117,20 @@ const useStyles = makeStyles(theme => ({
   },
   typography_text: {
     marginLeft: "auto"
+  },
+  titleText: {
+    textDecoration: "underline",
+    marginTop: "30px"
+  },
+  paperEnd: {
+    marginBottom: "20px",
+    backgroundColor: "#303030",
+    color: "#FFFFFF",
+    marginTop: "15px",
+    marginLeft: "15px",
+    marginRight: "15px",
+    fontSize: "14px",
+    font: "Helvetica"
   }
 }));
 
@@ -233,8 +248,8 @@ const PostsLog = () => {
     <Grid item xs={12} md={12}>
       {blog.map(article => (
         <div>
-          <Typography variant="h5" gutterBottom>
-            {article.title}
+          <Typography variant="h5" className={classes.titleText} gutterBottom>
+            {article.title} by {article.author}
           </Typography>
 
           <Markdown className={classes.markdown}>{article.post}</Markdown>
@@ -244,7 +259,7 @@ const PostsLog = () => {
               Comments
             </Box>
           </Typography>
-          <Paper elevation={0} className={classes.paper} variant="outlined">
+          <Paper elevation={0} className={classes.paperEnd} variant="outlined">
             {Object.values(article.comments).map((comment, index) => (
               <div>
                 <Typography variant="h6" className={classes.paper}>
