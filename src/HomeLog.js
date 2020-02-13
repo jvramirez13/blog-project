@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import NavbarLog from "./NavbarLog.js";
 import Footer from "./Footer.js";
 import background from "./ps.png";
-import Posts from "./Posts.js";
 import fire from "./firebase.js";
+import HeaderLog from "./HeaderLog.js";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import Divider from "@material-ui/core/Divider";
+import PostsLog from "./PostsLog.js";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`
-  },
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: 700
-    }
   },
   toolbarTitle: {
     flex: 1
@@ -59,7 +56,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   mainGrid: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    backgroundColor: "#000000",
+    marginBotton: "2px"
   },
   card: {
     display: "flex"
@@ -76,7 +75,8 @@ const useStyles = makeStyles(theme => ({
   },
   sidebarAboutBox: {
     padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[200]
+    backgroundColor: "#303030",
+    color: "#FFFFFF"
   },
   sidebarSection: {
     marginTop: theme.spacing(3)
@@ -88,11 +88,53 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function HomeNoLog() {
+const sections = [
+  { title: "Home", url: "#" },
+  { title: "Log In", url: "/loginex" },
+  { title: "Sign Up", url: "#" }
+];
+
+const darkTheme = createMuiTheme({
+  palette: {
+    background: {
+      default: "#000000"
+    },
+    text: {
+      primary: "#ffffff"
+    }
+  }
+});
+
+function useBlogs() {
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    // todo: we need an unsubscribe callback()
+
+    //sortBy is added to the parenthesis at the end
+    //of the useEffect so that everytime sortBy changes
+    //we resubscribe and get a sorted list of times
+    const unsubscribe = fire
+      .firestore()
+      .collection("users")
+      .doc(fire.auth().currentUser.uid.toString())
+      .onSnapshot(snapshot => {
+        setBlog(snapshot.data());
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  return blog;
+}
+
+const HomeNoLog = () => {
   const classes = useStyles();
 
   const [currentSubmission, setSubmission] = useState("");
   const [articleTitle, setArticleTitle] = useState("");
+
+  const info = useBlogs();
 
   function onSubmit(e) {
     e.preventDefault();
@@ -116,103 +158,102 @@ export default function HomeNoLog() {
 
   return (
     <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="lg">
-        <NavbarLog />
-        <main>
-          {/* Main featured post */}
-          <Paper className={classes.mainFeaturedPost}>
-            {/* Increase the priority of the hero background image */}
-            <div className={classes.overlay} />
-            <Grid container>
-              <Grid item md={1}>
-                <div className={classes.mainFeaturedPostContent}>
-                  <Typography
-                    component="h2"
-                    variant="h2"
-                    color="inherit"
-                    gutterBottom
-                    style={{ fontFamily: "Helvetica Neue" }}
-                  >
-                    Welcome {fire.auth().currentUser.uid}.
-                  </Typography>
-                </div>
-              </Grid>
-            </Grid>
-          </Paper>
-          {/* End main featured post */}
-
-          <Grid container spacing={5} className={classes.mainGrid}>
-            {/* Main content */}
-            <Grid item xs={12} md={8} alignItems="stretch">
-              <Typography
-                variant="h4"
-                gutterBottom
-                style={{ fontFamily: "Futura" }}
-              >
-                Blog Articles
-              </Typography>
-              <Posts />
-              <Typography
-                variant="h6"
-                gutterBottom
-                className={classes.mainGrid}
-              >
-                Write your own Article!
-                <form
-                  className={classes.mainGrid}
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={onSubmit}
-                >
-                  <div>
-                    <label>Title: </label>
-                    <input
-                      type="text"
-                      value={articleTitle}
-                      onChange={e => setArticleTitle(e.currentTarget.value)}
-                      size="42"
-                    />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Container maxWidth="lg">
+          <HeaderLog title="Blog" sections={sections} />
+          <main>
+            {/* Main featured post */}
+            <Paper className={classes.mainFeaturedPost}>
+              {/* Increase the priority of the hero background image */}
+              <div className={classes.overlay} />
+              <Grid container>
+                <Grid item md={1}>
+                  <div className={classes.mainFeaturedPostContent}>
+                    <Typography
+                      component="h2"
+                      variant="h2"
+                      color="inherit"
+                      gutterBottom
+                      style={{ fontFamily: "Helvetica Neue" }}
+                    >
+                      Welcome {info.full_name}.
+                    </Typography>
                   </div>
-                  <textarea
-                    id="w3mission"
-                    rows="4"
-                    cols="50"
-                    value={currentSubmission}
-                    onChange={e => setSubmission(e.currentTarget.value)}
+                </Grid>
+              </Grid>
+            </Paper>
+            {/* End main featured post */}
+
+            <Grid container spacing={5} className={classes.mainGrid}>
+              {/* Main content */}
+              <Grid item xs={12} md={8} alignItems="stretch">
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  style={{ fontFamily: "Futura" }}
+                >
+                  Blog Articles
+                </Typography>
+                <PostsLog />
+                <Divider />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  className={classes.mainGrid}
+                  marginBottom="2px"
+                >
+                  Write your own Article!
+                  <form
+                    className={classes.mainGrid}
+                    noValidate
+                    autoComplete="off"
+                    onSubmit={onSubmit}
                   >
-                    At w3schools.com you will learn how to make a website. We
-                    offer free tutorials in all web development technologies.
-                  </textarea>
-                  <button>Submit Article</button>
-                </form>
-              </Typography>
-            </Grid>
-            {/* End main content */}
-            {/* Sidebar */}
-            <Grid item xs={12} md={4} style={{ marginBottom: "0px" }}>
-              <Paper elevation={0} className={classes.sidebarAboutBox}>
-                <Typography variant="h6" gutterBottom>
-                  About
+                    <div>
+                      <Typography>Title: </Typography>
+                      <input
+                        type="text"
+                        value={articleTitle}
+                        onChange={e => setArticleTitle(e.currentTarget.value)}
+                        size="42"
+                      />
+                    </div>
+                    <textarea
+                      id="w3mission"
+                      rows="20"
+                      cols="160"
+                      value={currentSubmission}
+                      onChange={e => setSubmission(e.currentTarget.value)}
+                    >
+                      At w3schools.com you will learn how to make a website. We
+                      offer free tutorials in all web development technologies.
+                    </textarea>
+                    <button>Submit Article</button>
+                  </form>
                 </Typography>
-                <Typography>
-                  This is a blog where registered users can post articles and
-                  visitors can comment.
-                </Typography>
-              </Paper>
-              <Typography
-                variant="h6"
-                gutterBottom
-                className={classes.sidebarSection}
-              >
-                Archives
-              </Typography>
+              </Grid>
+              {/* End main content */}
+              {/* Sidebar */}
+              <Grid item xs={12} md={4} style={{ marginBottom: "0px" }}>
+                <Paper elevation={0} className={classes.sidebarAboutBox}>
+                  <Typography variant="h6" gutterBottom>
+                    About
+                  </Typography>
+                  <Typography>
+                    This is a blog where registered users can post articles and
+                    visitors can comment.
+                  </Typography>
+                </Paper>
+              </Grid>
+              {/* End sidebar */}
             </Grid>
-            {/* End sidebar */}
-          </Grid>
-        </main>
-      </Container>
-      <Footer />
+          </main>
+        </Container>
+        <Footer />
+      </ThemeProvider>
     </React.Fragment>
   );
-}
+};
+
+export default HomeNoLog;

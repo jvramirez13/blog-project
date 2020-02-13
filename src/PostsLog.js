@@ -128,7 +128,7 @@ function useBlogs() {
     //sortBy is added to the parenthesis at the end
     //of the useEffect so that everytime sortBy changes
     //we resubscribe and get a sorted list of times
-    const unsubscribe = fire
+    const unsubscribe1 = fire
       .firestore()
       .collection("blogs")
       .onSnapshot(snapshot => {
@@ -140,13 +140,13 @@ function useBlogs() {
         setBlog(newBlogs);
       });
 
-    return () => unsubscribe();
+    return () => unsubscribe1();
   }, []);
 
   return blog;
 }
 
-const Posts = () => {
+const PostsLog = () => {
   const classes = useStyles();
 
   const blog = useBlogs();
@@ -154,6 +154,21 @@ const Posts = () => {
   const [currentUser, setCurrentUser] = useState("Guest");
   const [currentArticle, setCurrentArticle] = useState("");
   const [currentComment, setCurrentComment] = useState("");
+
+  useEffect(() => {
+    // todo: we need an unsubscribe callback()
+
+    //sortBy is added to the parenthesis at the end
+    //of the useEffect so that everytime sortBy changes
+    //we resubscribe and get a sorted list of times
+    fire
+      .firestore()
+      .collection("users")
+      .doc(fire.auth().currentUser.uid.toString())
+      .onSnapshot(snapshot => {
+        setCurrentUser(snapshot.data().full_name);
+      });
+  }, []);
 
   //prevents refresh of browser everytime button is submitted
   function onSubmit(e) {
@@ -263,4 +278,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default PostsLog;

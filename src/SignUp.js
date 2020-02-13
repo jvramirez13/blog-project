@@ -9,12 +9,13 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-
 import React, { useCallback, useContext } from "react";
 import { withRouter, Redirect } from "react-router";
 import fire from "./firebase.js";
 import { AuthContext } from "./Auth.js";
 import background from "./authentication_screen.png";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
 function Copyright() {
   return (
@@ -62,16 +63,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark"
+  }
+});
+
 const SignUp = ({ history }) => {
   const handleSignUp = useCallback(
     async event => {
       //won't reload page when user clicks sign up
       event.preventDefault();
-      const { email, password } = event.target.elements;
+      const { name, email, password } = event.target.elements;
       try {
         await fire
           .auth()
           .createUserWithEmailAndPassword(email.value, password.value);
+        await fire.firestore()
+        .collection("users")
+        .doc(fire.auth().currentUser.uid.toString())
+        .set({
+          full_name: name.value,
+        })
         history.push("/HomeLog");
       } catch (error) {
         alert(error);
@@ -88,55 +101,72 @@ const SignUp = ({ history }) => {
 
   return (
     <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign Up to Perfect Sense Blog
-          </Typography>
-          <form className={classes.form} onSubmit={handleSignUp}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign Up to Perfect Sense Blog
+            </Typography>
+            <form className={classes.form} onSubmit={handleSignUp}>
             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container></Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
-      </Grid>
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="name"
+                label="Full Name"
+                type="name"
+                id="name"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
+              <Grid item>
+                <Link href="/loginex" color="inherit" variant="body2">
+                  {"Already have an account? Log In!"}
+                </Link>
+              </Grid>
+              <Grid container></Grid>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
+      </ThemeProvider>
     </Grid>
   );
 };
