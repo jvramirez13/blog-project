@@ -185,9 +185,8 @@ const Posts = () => {
         if (doc.exists) {
           let additionArray = doc.data().comments;
           if (currentUser === "Guest") {
-            let randomNum = Math.floor(Math.random() * Math.floor(10000));
-            let guestAccount = currentUser + randomNum.toString();
-            additionArray[guestAccount] = currentComment;
+            let newComment = { Guest: currentComment };
+            additionArray.push(newComment);
             fire
               .firestore()
               .collection("blogs")
@@ -245,13 +244,13 @@ const Posts = () => {
             </Box>
           </Typography>
           <Paper elevation={0} className={classes.paperEnd} variant="outlined">
-            {Object.values(article.comments).map((comment, index) => (
+            {article.comments.map((comment, index) => (
               <div>
                 <Typography variant="h6" className={classes.paper}>
-                  <Typography>{comment}</Typography>
+                  <Typography>{comment[Object.keys(comment)[0]]}</Typography>
                   <span className={classes.span}>
                     {" "}
-                    - Written by {Object.keys(article.comments)[index]}
+                    - Written by {Object.keys(comment)[0]}
                   </span>
                 </Typography>
               </div>

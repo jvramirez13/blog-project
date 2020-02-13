@@ -147,7 +147,7 @@ const HomeNoLog = () => {
         title: articleTitle,
         post: currentSubmission,
         author: info.full_name,
-        comments: {}
+        comments: []
       })
       .then(function() {
         console.log("Document successfully written!");
